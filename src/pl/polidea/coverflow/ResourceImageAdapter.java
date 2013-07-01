@@ -81,7 +81,7 @@ public class ResourceImageAdapter extends AbstractCoverFlowImageAdapter {
     @Override
     protected Bitmap createBitmap(final int position) {
         Log.v(TAG, "creating item " + position);
-        final Bitmap bitmap = ((BitmapDrawable) context.getResources().getDrawable(IMAGE_RESOURCE_IDS.get(position)))
+        final Bitmap bitmap = ((BitmapDrawable) context.getResources().getDrawable(IMAGE_RESOURCE_IDS.get(2)))
                 .getBitmap();
         bitmapMap.put(position, new WeakReference<Bitmap>(bitmap));
         return bitmap;

@@ -45,12 +45,12 @@ public class CoverFlow extends Gallery {
     /**
      * The maximum angle the Child ImageView will be rotated by.
      */
-    private int mMaxRotationAngle = 60;
+    private int mMaxRotationAngle = 180;
 
     /**
      * The maximum zoom on the centre Child.
      */
-    private int mMaxZoom = -120;
+    private int mMaxZoom = 800;
 
     /**
      * The Centre of the Coverflow.
@@ -283,7 +283,11 @@ public class CoverFlow extends Gallery {
         if (childCenter == mCoveflowCenter) {
             transformImageBitmap((ImageView) child, t, 0);
         } else {
-            rotationAngle = (int) ((float) (mCoveflowCenter - childCenter) / childWidth * mMaxRotationAngle);
+            //rotationAngle = (int) ((float) (mCoveflowCenter - childCenter) / childWidth * mMaxRotationAngle);
+            int screenWidth = 320;
+            float offset = Math.abs(mCoveflowCenter - childCenter);
+            float ratio = ( offset / (screenWidth / 2)  );
+            rotationAngle = (int) (ratio * mMaxRotationAngle);
             if (Math.abs(rotationAngle) > mMaxRotationAngle) {
                 rotationAngle = rotationAngle < 0 ? -mMaxRotationAngle : mMaxRotationAngle;
             }
@@ -334,13 +338,13 @@ public class CoverFlow extends Gallery {
 
         mCamera.translate(0.0f, 0.0f, 100.0f);
 
-        // As the angle of the view gets less, zoom in
-        if (rotation < mMaxRotationAngle) {
-            final float zoomAmount = (float) (mMaxZoom + rotation * 1.5);
+        // As the 'angle' becomes greater, zoom out
+        if (rotation > 0) {
+            final float zoomAmount = (float) (mMaxZoom * rotation / mMaxRotationAngle);
             mCamera.translate(0.0f, 0.0f, zoomAmount);
         }
 
-        mCamera.rotateY(rotationAngle);
+       // mCamera.rotateY(rotationAngle);  Take out rotation
         mCamera.getMatrix(imageMatrix);
         imageMatrix.preTranslate(-(width / 2.0f), -(height / 2.0f));
         imageMatrix.postTranslate((width / 2.0f), (height / 2.0f));
